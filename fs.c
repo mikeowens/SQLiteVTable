@@ -383,10 +383,6 @@ reread_next_entry:
 
         /* Combine the path and file names to get full path */
 
-        // APR is so incredibly unreliable. This call will fail for NO REASON WHATSOEVER.
-        //char* path = (char*)apr_pstrcat(p_cur->tmp_pool, d->path, "/", d->dirent.name, 0);
-
-        // Instead we must do it this way:
         char path[1024];
         sprintf(&path[0], "%s/%s", d->path, d->dirent.name);
 
@@ -416,7 +412,7 @@ reread_next_entry:
              * apr_close() it (->core dump) */
             p_cur->current_node->dir = NULL;
 
-            // Skip to next entry
+            /* Skip to next entry */
             deallocate_filenode(d);
             p_cur->current_node = d = prev_d;
             goto reread_next_entry;
