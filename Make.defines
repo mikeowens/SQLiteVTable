@@ -1,0 +1,8 @@
+DEBUG_ON      = -D DEBUG
+DEBUG_OFF     = -O2
+PROFILE_ON    = -pg --profile-arcs --test-coverage
+PROFILE_OFF   = 
+PROFILING     = $(PROFILE_OFF)
+DEBUGGING	  = $(DEBUG_ON)
+
+NAME        = vtable

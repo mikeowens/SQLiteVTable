@@ -1,0 +1,4 @@
+# Solaris build configuration
+
+include Make.unix
+

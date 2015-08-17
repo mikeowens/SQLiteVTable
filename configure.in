@@ -1,0 +1,61 @@
+AC_INIT(vtables, 1.0, bugs@mikesclutter.com)
+AC_CONFIG_AUX_DIR(config)
+
+PACKAGE=vtables
+
+dnl version number
+MAJOR_VERSION=0
+MINOR_VERSION=0
+MICRO_VERSION=1
+INTERFACE_AGE=0
+BINARY_AGE=0
+VERSION=$MAJOR_VERSION.$MINOR_VERSION.$MICRO_VERSION
+
+AC_SUBST(VERSION, $VERSION)
+
+AC_CANONICAL_HOST
+AC_MSG_NOTICE([Host = ${host}])
+
+case ${host} in 
+    *-FreeBSD*)
+    AC_SUBST(MAKE_DEFINES, Make.freebsd)
+    ;;
+	*-linux*)
+    AC_SUBST(MAKE_DEFINES, Make.linux)
+    ;;
+     *-*-mingw32*)
+    AC_SUBST(MAKE_DEFINES, Make.mingw)
+    ;;
+    *-solaris*)
+    AC_SUBST(MAKE_DEFINES, Make.solaris)
+    ;;
+esac
+
+AC_CONFIG_HEADERS(config.h)
+
+# Checks for programs.
+AC_PROG_CC
+AC_PROG_CXX
+AC_PROG_CXXCPP
+AC_PROG_INSTALL
+AC_PROG_RANLIB
+AC_PROG_AWK
+
+# Checks for libraries.
+
+# Checks for header files.
+
+AC_HEADER_STDC
+#AC_CHECK_HEADERS(utime.h)
+#AC_CHECK_HEADERS(sys/epoll.h, AC_DEFINE([LINUX_26],[],[Linux 2.6]), AC_DEFINE([LINUX_24],[],[Linux 2.4]))
+#AC_CHECK_HEADERS(sys/epoll.h)
+AC_FUNC_UTIME_NULL
+
+# Checks for typedefs, structures, and compiler characteristics.
+
+# Checks for library functions.
+
+AC_CONFIG_FILES([Makefile])
+
+AC_OUTPUT
+

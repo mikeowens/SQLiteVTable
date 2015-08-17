@@ -1,0 +1,8 @@
+# Linux/UNIX build configuration
+
+ADDCFLAGS     = -ggdb -D UNIX -D_REENTRANT -W 
+ADDCPPFLAGS   = 
+ADDLDFLAGS    = -D_REENTRANT -L $(PREFIX)/lib 
+ADDLIBS       = -lapr-1
+DSO_EXTENSION = so
+INCPATHS      = -I $(PREFIX)/include

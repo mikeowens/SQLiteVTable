@@ -1,0 +1,12 @@
+# Windows build configuration
+
+DSO_EXTENSION = dll
+INCPATHS      = -I ../../../include      \
+                -I ../../                \
+                -I ../../apr/include     \
+                -I ../../openssl/include \
+                -I ../../bzip2
+ADDCFLAGS     = -Wall -D_WIN32
+ADDLDFLAGS    = -L/usr/lib -Wl,-L,/c/usr/bin -Wl,--dll
+ADDLIBS  	  = $(STATIC_LIBS) -lapr -lpcre -lcrypto -lbz2 -lswish         \
+                -lrpcrt4 -lshell32 -lws2_32 -ladvapi32 -lkernel32 -lmsvcrt

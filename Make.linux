@@ -1,0 +1,5 @@
+# Linux build configuration
+
+include Make.unix
+
+ADDLCFLAGS = $(ADDCFLAGS) -fPIC -DLINUX=2 -D_REENTRANT -D_GNU_SOURCE -D_LARGEFILE64_SOURCE 
