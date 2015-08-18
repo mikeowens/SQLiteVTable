@@ -3,6 +3,6 @@
 ADDCFLAGS     = -ggdb -D UNIX -D_REENTRANT -W 
 ADDCPPFLAGS   = 
 ADDLDFLAGS    = -D_REENTRANT -L $(PREFIX)/lib 
-ADDLIBS       = -lapr-1
+ADDLIBS       = -lapr-1 -pthread
 DSO_EXTENSION = so
 INCPATHS      = -I $(PREFIX)/include

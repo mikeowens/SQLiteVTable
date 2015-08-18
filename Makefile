@@ -69,7 +69,7 @@ all:		program shared
 lib:		shared static
 
 program:	$(LIBFILES) main.o sqlite3.o
-	$(CC) $(LINKFLAGS) -o program main.o sqlite3.o $(LDFLAGS) $(LIBS) -ldl -pthread
+	$(CC) $(LINKFLAGS) -o program main.o sqlite3.o $(LDFLAGS) $(LIBS) -ldl
 
 # Share library
 shared:	$(LIBFILES)

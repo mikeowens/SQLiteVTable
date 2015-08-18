@@ -25,3 +25,4 @@ select sum(size/(1024.0*1024.0*1024.0)) as 'size (GB)'
 from fs 
 where
   path match '/usr/lib,/var/log';
+  

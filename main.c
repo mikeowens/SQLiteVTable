@@ -18,9 +18,6 @@ int main(int argc, char **argv)
     /* Arrange to have it cleaned up at exit. */
     atexit(apr_terminate);
 
-    //apr_pool_t* pool = NULL;
-    //apr_pool_create_ex(&pool, NULL, NULL, NULL);
-
     /* Open an in-memory database */
     if(sqlite3_open(":memory:", &db) != SQLITE_OK) { 
         exit(1); 
@@ -40,7 +37,8 @@ int main(int argc, char **argv)
     }
 
     /* Create it. */
-    rc = sqlite3_exec(db, "create virtual table f using filesystem", NULL, NULL, &msg);
+    sql = "create virtual table f using filesystem";
+    rc = sqlite3_exec(db, sql, NULL, NULL, &msg);
 
     if(rc != SQLITE_OK) { 
         printf("ERROR: %s\n", msg);

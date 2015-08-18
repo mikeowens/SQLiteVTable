@@ -68,8 +68,8 @@ all:		program shared
 # Build both a shared and static library
 lib:		shared static
 
-program:	$(LIBFILES) main.o 
-	$(CC) $(LINKFLAGS) -o program main.o $(LDFLAGS) $(LIBS) -ldl
+program:	$(LIBFILES) main.o sqlite3.o
+	$(CC) $(LINKFLAGS) -o program main.o sqlite3.o $(LDFLAGS) $(LIBS) -ldl
 
 # Share library
 shared:	$(LIBFILES)
