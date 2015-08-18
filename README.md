@@ -8,7 +8,6 @@ The filesystem virtual table gives you a relational interface into your
 filesystem. With it you can search for files with SQL like so:
 
 ```sql
--- Look for stuff
 select
   prot, uid, gid, size/(1024*1024) as 'size (Mb)', 
   dev, path || '/' || name as file 
