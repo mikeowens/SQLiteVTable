@@ -43,16 +43,17 @@ static const char* ddl = "create table fs ("
 ")";
 
 /* TODO
-
-1. Make constructor with recursive flag -- set to zero to create an ls
-   implementation. recursive will be find.
-
-create virtual table find as using filesystem('recursive=true');
-create virtual table ls as using filesystem('recursive=false');
-
-2. Add hidden field : prune or exclude. Then you can specify paths to ignore
-
-3. Handle inode index case.
+**
+** 1. Make constructor with recursive flag -- set to zero to create an ls
+**    implementation. Recursive will be find.
+**
+**      create virtual table find as using filesystem('recursive=true');
+**      create virtual table ls as using filesystem('recursive=false');
+**
+** 2. Add hidden field: prune or exclude. Then you can specify paths to ignore
+**
+** 3. Handle inode index case.
+**
 */
 
 /* vtab: represents a virtual table. */
@@ -175,7 +176,7 @@ static int vt_create( sqlite3 *db,
     /* Allocate the sqlite3_vtab/vtab structure itself */
     p_vt = (vtab*)sqlite3_malloc(sizeof(*p_vt));
 
-    if(p_vt == NULL)
+    if (p_vt == NULL)
     {
         return SQLITE_NOMEM;
     }
@@ -259,7 +260,7 @@ static int vt_close(sqlite3_vtab_cursor *cur)
     apr_pool_destroy(p_cur->tmp_pool);    
 
     /* Free path match term */
-    if(p_cur->search_paths != NULL)
+    if (p_cur->search_paths != NULL)
     {
         free((void*)p_cur->search_paths);
         p_cur->search_paths = NULL;
@@ -316,7 +317,7 @@ read_next_entry:
      *  true, resort to next_directory().
      */
 
-    if(p_cur->current_node->dir == NULL)
+    if (p_cur->current_node->dir == NULL)
     {
         return next_directory(p_cur);
     }
@@ -332,17 +333,17 @@ read_next_entry:
 reread_next_entry:
 
     /* Read the next entry in the directory (d->dir). Fills the d->dirent member. */
-    if(apr_dir_read( &d->dirent, 
-                     APR_FINFO_DIRENT|APR_FINFO_PROT|APR_FINFO_TYPE|
-                     APR_FINFO_NAME|APR_FINFO_SIZE, 
-                     d->dir) != APR_SUCCESS )
+    if ( apr_dir_read( &d->dirent, 
+                      APR_FINFO_DIRENT|APR_FINFO_PROT|APR_FINFO_TYPE|
+                      APR_FINFO_NAME|APR_FINFO_SIZE, 
+                      d->dir) != APR_SUCCESS )
     {
         /** If we get here, the call failed. There are no more entries in
          *  directory. 
          */
 
         /** If we are at the top level directory */
-        if(d->parent == NULL)
+        if (d->parent == NULL)
         {
             /** We are done with this directory. See if there is another
              *  top-level directory to search.
@@ -368,12 +369,12 @@ reread_next_entry:
     }
 
     /* If the current dirent is a directory, then descend into it. */
-    if(d->dirent.filetype == APR_DIR)
+    if (d->dirent.filetype == APR_DIR)
     {     
         /* Skip . and .. entries */
-        if(d->dirent.name != NULL)
+        if (d->dirent.name != NULL)
         {
-            if(strcmp(d->dirent.name, ".") == 0 || strcmp(d->dirent.name, "..") == 0)
+            if (strcmp(d->dirent.name, ".") == 0 || strcmp(d->dirent.name, "..") == 0)
             {
                 goto read_next_entry;
             }
@@ -401,7 +402,7 @@ reread_next_entry:
         apr_pool_clear(p_cur->tmp_pool);
         
         /* Open the directory */
-        if((p_cur->status = apr_dir_open(&d->dir, d->path, p_cur->pool)) != APR_SUCCESS)
+        if ((p_cur->status = apr_dir_open(&d->dir, d->path, p_cur->pool)) != APR_SUCCESS)
         {
             /* Problem. Couldn't open directory. */
 
@@ -442,7 +443,7 @@ static int vt_column(sqlite3_vtab_cursor *cur, sqlite3_context *ctx, int col)
         case 0:
         {
             /* Will be present if entry is a file */
-            if(d->dirent.name != NULL)
+            if (d->dirent.name != NULL)
             {
                 sqlite3_result_text( ctx, 
                                      d->dirent.name,
@@ -453,7 +454,7 @@ static int vt_column(sqlite3_vtab_cursor *cur, sqlite3_context *ctx, int col)
             }
 
             /* Will be present if entry is a directory */
-            if(d->dirent.fname != NULL)
+            if (d->dirent.fname != NULL)
             {
                 sqlite3_result_text( ctx, 
                                      d->dirent.fname,
@@ -472,13 +473,13 @@ static int vt_column(sqlite3_vtab_cursor *cur, sqlite3_context *ctx, int col)
         /* col 1: file path */
         case 1:
         {
-            if(d->path != NULL)
+            if (d->path != NULL)
             {
                 int  len = 0;
                 char path[PATH_MAX];
 
                 /* If this entry is a top-level file */
-                if(d->dir == NULL)
+                if (d->dir == NULL)
                 {
                     /** Then the full path is the path of the file name. Get
                      *  length of path up to the filename. The -1 strips
@@ -600,7 +601,7 @@ static int vt_column(sqlite3_vtab_cursor *cur, sqlite3_context *ctx, int col)
         /* col 13: dir inode */
         case 13:
         {
-            if(p_cur->current_node->parent != NULL)
+            if (p_cur->current_node->parent != NULL)
             {
                 sqlite3_result_int(ctx, p_cur->current_node->parent->dirent.inode);
             }
@@ -640,7 +641,7 @@ static int vt_filter( sqlite3_vtab_cursor *p_vtc,
     vtab_cursor *p_cur = (vtab_cursor*)p_vtc;
     vtab *p_vt         = (vtab*)p_vtc->pVtab;
 
-    if(argc > 0)
+    if (argc > 0)
     {
         p_cur->search_paths = strdup(sqlite3_value_text(argv[0]));
     }
@@ -687,15 +688,15 @@ static int vt_filter( sqlite3_vtab_cursor *p_vtc,
 int has_constraint(sqlite3_index_info *p_info, int col, int opmask)
 {
     int i;
-    for(i = 0; i < p_info->nConstraint; i++)
+    for (i = 0; i < p_info->nConstraint; i++)
     {
-        if(p_info->aConstraint[i].iColumn == col)
+        if (p_info->aConstraint[i].iColumn == col)
         {
             /* If specific operations are specified */
-            if(opmask != 0)
+            if (opmask != 0)
             {
                 /* Check that at least one is satisfied */
-                if(p_info->aConstraint[i].op & opmask)
+                if (p_info->aConstraint[i].op & opmask)
                 {
                     /*
                     printf( "col=%i op=%i\n", 
@@ -754,7 +755,7 @@ static int vt_best_index(sqlite3_vtab *tab, sqlite3_index_info *p_info)
     /** If their is a name (column 0) constraint in the WHERE clause 
      *  and it uses the match or equals operator
      */
-    if((i = has_constraint(p_info, 0, ops)) > -1)
+    if ((i = has_constraint(p_info, 0, ops)) > -1)
     {
         /* Then we want the value to be passed to xFilter() */
         p_info->aConstraintUsage[i].argvIndex = 1;
@@ -763,7 +764,7 @@ static int vt_best_index(sqlite3_vtab *tab, sqlite3_index_info *p_info)
     /** If their is a path constraint in the WHERE clause (column 1 is
      *  specified) and it uses the match operator
      */
-    if((i = has_constraint(p_info, 1, ops)) > -1)
+    if ((i = has_constraint(p_info, 1, ops)) > -1)
     {
         /* Then we want the value to be passed to xFilter() */
         p_info->aConstraintUsage[i].argvIndex = 1;
@@ -778,7 +779,7 @@ void vt_match_function(sqlite3_context* ctx, int argc, sqlite3_value** argv)
     printf("Match function: %i\n", argc);
 
     int i;
-    for(i = 0; i < argc; i++)
+    for (i = 0; i < argc; i++)
     {
         printf("  arg=%s\n", sqlite3_value_text(argv[i]));
     }
@@ -804,7 +805,7 @@ int vt_find_function( sqlite3_vtab *pVtab,
                       void **ppArg )
 {
     /* Register the match function */
-    if(strcmp(zName, "match") == 0)
+    if (strcmp(zName, "match") == 0)
     {
         *pxFunc = vt_match_function;
 
@@ -897,14 +898,14 @@ static void deallocate_filenode(struct filenode* p)
  * abort a search. */
 static void deallocate_dirpath(vtab_cursor *p_cur)
 {
-    if(p_cur->current_node == NULL)
+    if (p_cur->current_node == NULL)
     {
         return;
     }
 
     struct filenode* current_node = p_cur->current_node;
 
-    while(current_node != p_cur->root_node)
+    while (current_node != p_cur->root_node)
     {
         current_node = p_cur->current_node->parent;
         deallocate_filenode(p_cur->current_node);
@@ -926,9 +927,9 @@ static struct filenode* move_up_directory(vtab_cursor *p_cur)
     p_cur->current_node = d->parent;
 
     /* Close current directory */
-    if(d->dir != NULL)
+    if (d->dir != NULL)
     {
-        if(d->dirent.pool != NULL)
+        if (d->dirent.pool != NULL)
         {
             apr_dir_close(d->dir);
         }
@@ -947,14 +948,14 @@ static struct filenode* move_up_directory(vtab_cursor *p_cur)
 static next_path(vtab_cursor* p_cur)
 {
     /* Free the path value of the current filenode */
-    if(p_cur->current_node->path != NULL)
+    if (p_cur->current_node->path != NULL)
     {
         free(p_cur->current_node->path);
         p_cur->current_node->path = NULL;
     }
 
     /* If root_path is empty */
-    if(p_cur->root_path == NULL)
+    if (p_cur->root_path == NULL)
     {
         /* There is nothing more to get. */
         return 0;
@@ -964,10 +965,10 @@ static next_path(vtab_cursor* p_cur)
     const char* ptr = strchr(p_cur->root_path, ',');
 
     /* Eat blank spaces */
-    while(isblank(*p_cur->root_path)){p_cur->root_path++;}
+    while (isblank(*p_cur->root_path)) {p_cur->root_path++;}
 
     /* If we have another delimiter */
-    if(ptr != NULL)
+    if (ptr != NULL)
     {
         /* Then extract the string between root_path and delimiter */
         int len = (ptr - p_cur->root_path);
@@ -979,7 +980,7 @@ static next_path(vtab_cursor* p_cur)
     else
     {
         /* This is the last match. If there is anything left */
-        if(strlen(p_cur->root_path) > 0)
+        if (strlen(p_cur->root_path) > 0)
         {
             /* Use it. */
             p_cur->current_node->path = strdup(p_cur->root_path);
@@ -1001,7 +1002,7 @@ static int next_directory(vtab_cursor *p_cur)
 
     /* Get the next path name in the search list. If there isn't next_path()
      * will return 0, as do we. */
-    if(next_path(p_cur) == 0)
+    if (next_path(p_cur) == 0)
     {
         /* No more directories to search. End of result set. */
         p_cur->eof = 1;
@@ -1025,12 +1026,12 @@ static int next_directory(vtab_cursor *p_cur)
                               p_cur->current_node->path, 
                               APR_FINFO_TYPE, p_cur->pool );
 
-    if(p_cur->status != APR_SUCCESS)
+    if (p_cur->status != APR_SUCCESS)
     {
         /* Directory does not exist */
         p_cur->eof = 1;
 
-        if(p_vt->base.zErrMsg != NULL)
+        if (p_vt->base.zErrMsg != NULL)
         {
             sqlite3_free(p_vt->base.zErrMsg);
         }
@@ -1045,17 +1046,17 @@ static int next_directory(vtab_cursor *p_cur)
     else 
     {
         /* If this entry is a directory, then open it */
-        if(p_cur->current_node->dirent.filetype == APR_DIR)
+        if (p_cur->current_node->dirent.filetype == APR_DIR)
         {
             p_cur->status = apr_dir_open( &p_cur->current_node->dir, 
                                           p_cur->current_node->path, p_cur->pool);
 
-            if(p_cur->status != APR_SUCCESS)
+            if (p_cur->status != APR_SUCCESS)
             {
                 /* Could not open directory */
                 p_cur->eof = 1;
                 
-                if(p_vt->base.zErrMsg != NULL)
+                if (p_vt->base.zErrMsg != NULL)
                 {
                     sqlite3_free(p_vt->base.zErrMsg);
                 }
