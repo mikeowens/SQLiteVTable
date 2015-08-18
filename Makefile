@@ -43,7 +43,7 @@ S_LIB       = lib$(NAME).$(DSO_EXTENSION)
 VS_LIB      = $(S_LIB).$(LIBVER)
 PROGS       = all
 FILES       = 
-LIBFILES    = fs.o common.o
+LIBFILES    = lib.o example.o fs.o common.o
 HDR         =
 CLEANFILES  = gmon.out prof.txt *core		      \
 	          *.o *~ *.$(DSO_EXTENSION) *.a 

@@ -199,9 +199,9 @@ static sqlite3_module example_module =
     NULL            /* xRollbackto   - function overloading */
 };
 
-int example_init( sqlite3* db, 
-                  char **pzErrMsg, 
-                  const sqlite3_api_routines* pApi )
+int example_register( sqlite3* db, 
+                      char **pzErrMsg, 
+                      const sqlite3_api_routines* pApi )
 {
     SQLITE_EXTENSION_INIT2(pApi);
 

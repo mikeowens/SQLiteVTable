@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include "sqlite3ext.h"
-//SQLITE_EXTENSION_INIT1
+SQLITE_EXTENSION_INIT3
 
 #include "example.h"
 #include "fs.h"
@@ -20,14 +20,12 @@ int lib_init( sqlite3* db,
         return SQLITE_ERROR;
     }
 
-    /*
     if(fs_register(db) != SQLITE_OK)
     {
         fprintf(stderr, "Failed to register fs module\n");
 
         return SQLITE_ERROR;
     }
-    */
 
     return SQLITE_OK;
 }

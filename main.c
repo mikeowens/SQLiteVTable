@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <apr-1/apr_file_info.h>
+#include <apr-1.0/apr_file_info.h>
 #include <sqlite3.h>
 
 int main(int argc, char **argv)
@@ -31,7 +31,7 @@ int main(int argc, char **argv)
 
     /* Load the fs virtual table. */
     char* msg;
-    const char* lib = "/home/owensmk/data/code/projects/active/vaquero/src/test/vtable/libvtable";
+    const char* lib = "libvtable";
     rc = sqlite3_load_extension(db, lib, "fs_register", &msg);
 
     if(rc != SQLITE_OK) { 

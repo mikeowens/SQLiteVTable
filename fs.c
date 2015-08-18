@@ -2,10 +2,10 @@
 #include <stdlib.h>
 
 /* Apache Portable Runtime file info.*/
-#include <apr-1/apr_file_io.h>
+#include <apr-1.0/apr_file_io.h>
 
 #include <sqlite3ext.h>
-SQLITE_EXTENSION_INIT1
+SQLITE_EXTENSION_INIT3
 
 /** This file implements a SQLite virtual table that can read a file
  *  system. That is, the file system looks like a single table in SQLite. It
