@@ -96,9 +96,9 @@ struct filenode
  * The search logic is simple: we start at the top directory (root_path) and
  * search entry by entry. When we find an entry that is a directory, we descend
  * into it and search it (add a child filenode, point current_node to it, and
- * keep searching). When we have searched through the a directory, we pop the
+ * keep searching). When we have searched through the directory, we pop the
  * filenode from the bottom of the list, point current_node to its parent, and
- * resume searching. We keep going until we have search through all of
+ * resume searching. We keep going until we have searched through all of
  * root_node. Then we update root_node to the next top-level directory in
  * search_path, and start over. We repeat for all directories in search_paths.
  *
@@ -107,7 +107,7 @@ struct filenode
  *               SELECT * FROM filesystem 
  *               WHERE path match("/usr,/home,/var");
  *
- * Diagramitically, the state of our cursor data structure when currently at
+ * Diagrammatically, the state of our cursor data structure when currently at
  * /usr/lib/firefox/icons/mozicon16.xpm would be as follows:
  *
  * "/usr,/home,/var" <== search_paths
