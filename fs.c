@@ -239,8 +239,8 @@ static int vt_open(sqlite3_vtab *p_svt, sqlite3_vtab_cursor **pp_cursor)
     p_cur->root_node->parent = NULL;
     p_cur->root_node->path   = NULL;
     p_cur->current_node      = p_cur->root_node;
-    p_cur->search_paths  = NULL;
-    p_cur->root_path = 0;
+    p_cur->search_paths      = NULL;
+    p_cur->root_path         = 0;
 
     *pp_cursor = (sqlite3_vtab_cursor*)p_cur;
 
