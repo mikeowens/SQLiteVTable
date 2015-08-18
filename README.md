@@ -9,13 +9,30 @@ filesystem. With it you can search for files with SQL like so:
 
 ```sql
 select
-  prot, uid, gid, size/(1024*1024) as 'size (Mb)', 
-  dev, path || '/' || name as file 
+  ctime, atime, mtime, uid, gid, size/(1024*1024) as 'size (MB)', 
+  path || '/' || name as file 
 from fs 
 where 
     path match '/usr/lib, /var/log'
     and ((name like '%.so') || (name like '%.log'))
     order by size desc;  
+```
+
+The results will look something like the following:
+
+```
+ctime     mtime     uid    gid    size (MB)  file                                              
+--------  --------  -----  -----  ---------  --------------------------------------------------
+14334643  14313426  0      0      66         /usr/lib/firefox/libxul.so                        
+14334646  14313440  0      0      64         /usr/lib/thunderbird/libxul.so                    
+14338094  14298261  0      0      51         /usr/lib/libreoffice/program/libmergedlo.so       
+14334659  14174942  0      0      37         /usr/lib/nvidia-331/libnvidia-glcore.so.331.113   
+14334793  13970685  0      0      33         /usr/lib/x86_64-linux-gnu/libQtWebKit.so.4.10.2   
+14334732  13970682  0      0      32         /usr/lib/i386-linux-gnu/libQtWebKit.so.4.10.2     
+14334731  14291730  0      0      30         /usr/lib/jvm/java-7-openjdk-amd64/jre/lib/rt.jar  
+14334641  14225935  0      0      30         /usr/lib/x86_64-linux-gnu/libwebkitgtk-1.0.so.0.22
+14334641  14225935  0      0      30         /usr/lib/x86_64-linux-gnu/libwebkitgtk-3.0.so.0.22
+14336011  14237675  0      0      28         /usr/lib/x86_64-linux-gnu/libLLVM-3.5.so.1        
 ```
 
 The table has the following available columns:
