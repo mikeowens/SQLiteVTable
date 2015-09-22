@@ -1,7 +1,7 @@
 # About
 
-This is example code corresponding to Dr. Dobbs article I wrote a long time ago
-called [Query Anything with
+This is example code corresponding to a Dr. Dobbs article I wrote a long time
+ago called [Query Anything with
 SQLite](http://www.drdobbs.com/database/query-anything-with-sqlite/202802959). It
 contains two examples of SQLite virtual tables. One example create a virtual
 table out of the file system. Another is just a skeleton to use as a blank
