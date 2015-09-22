@@ -1,8 +1,12 @@
 # About
 
-This contains two example of SQLite virtual tables. I wrote this for a magazine
-article a long time ago. One example create a virtual table out of the file
-system. Another is just a skeleton to use as a blank slate.
+This is example code corresponding to Dr. Dobbs article I wrote a long time ago
+called [Query Anything with
+SQLite](http://www.drdobbs.com/database/query-anything-with-sqlite/202802959).
+
+This contains two examples of SQLite virtual tables. One example create a
+virtual table out of the file system. Another is just a skeleton to use as a
+blank slate.
 
 The filesystem virtual table gives you a relational interface into your
 filesystem. With it you can search for files with SQL like so:
